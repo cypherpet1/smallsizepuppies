@@ -10,6 +10,7 @@ crispy-tailwind = "*"
 django-tailwind = "*"
 pillow = "*"
 django-widget-tweaks = "*"
+whitenoise = "*"
 
 [dev-packages]
 
