@@ -1,0 +1,30 @@
+{% extends "store/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Adopt {{ puppy.name }}</h2>
+    <form method="POST" class="card shadow-sm p-4 mx-auto" style="max-width: 600px;">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+            <label for="id_full_name" class="form-label">Full Name</label>
+            {{ form.full_name|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {{ form.email|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="id_phone" class="form-label">Phone</label>
+            {{ form.phone|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+            <label for="id_message" class="form-label">Message</label>
+            {{ form.message|add_class:"form-control" }}
+        </div>
+        <input type="hidden" name="puppy_id" value="{{ puppy.id }}">
+        <button type="submit" class="btn btn-primary w-100">Submit Adoption Request</button>
+    </form>
+</div>
+{% endblock %}

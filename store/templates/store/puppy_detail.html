@@ -1,0 +1,100 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4 fw-bold">{{ puppy.name }}</h2>
+
+    <div class="row">
+        <div class="col-12 col-md-6"> <!-- Adjust to full width on small screens and half on medium and larger screens -->
+            <!-- Loop through all images associated with the puppy -->
+            {% for puppy_image in puppy.images.all %}
+                <!-- Image Thumbnails -->
+                <img src="{{ puppy_image.image.url }}" class="img-fluid mb-3 puppy-thumbnail" alt="{{ puppy.name }} Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-bs-image="{{ puppy_image.image.url }}">
+            {% empty %}
+                <p>No images available for this puppy.</p>
+            {% endfor %}
+        </div>
+        <div class="col-12 col-md-6"> <!-- Adjust to full width on small screens and half on medium and larger screens -->
+            <h4 class="text-primary">Price: ${{ puppy.price }}</h4>
+            <p class="text-muted">{{ puppy.description }}</p>
+            <hr>
+            <h5 class="text-success">Interested in Adopting?</h5>
+
+            <form action="{% url 'adopt' puppy.id %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Your Phone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="3" placeholder="Enter any questions or special requests" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Adoption Request</button>
+            </form>
+        </div>
+    </div> 
+</div>
+
+<!-- Modal for Image Preview -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Puppy Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Image will be dynamically set here -->
+                <img id="modalImage" class="img-fluid d-block mx-auto" alt="Puppy Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .puppy-thumbnail {
+        width: 100%;
+        height: 200px; /* Set a fixed height */
+        object-fit: cover; /* Ensures the image fits well and maintains aspect ratio */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect */
+    }
+
+    /* Hover effect */
+    .puppy-thumbnail:hover {
+        transform: scale(1.05); /* Slight zoom effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adding shadow effect */
+    }
+
+    /* Modal image centering */
+    .modal-body img {
+        max-width: 100%;
+        max-height: 500px; /* Prevents image from getting too large */
+        object-fit: contain;
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Event listener to change the image in the modal on click
+    const thumbnails = document.querySelectorAll('.puppy-thumbnail');
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function () {
+            const imageUrl = this.getAttribute('data-bs-image');
+            document.getElementById('modalImage').src = imageUrl;
+        });
+    });
+</script>
+{% endblock %}

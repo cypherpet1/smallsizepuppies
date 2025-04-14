@@ -1,0 +1,198 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Small Size Puppies for Adoption</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+    <style>
+        html {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Custom styling for light/dark theme */
+        body[data-bs-theme="dark"] {
+            background-color: #121212;
+            color: white;
+        }
+
+        body[data-bs-theme="light"] {
+            background-color: #f8f9fa;
+            color: black;
+        }
+
+        /* Navbar Styling */
+        nav[data-bs-theme="dark"] {
+            background-color: #333;
+        }
+
+        nav[data-bs-theme="light"] {
+            background-color: #f8f9fa;
+        }
+
+        nav[data-bs-theme="dark"] .navbar-brand,
+        nav[data-bs-theme="dark"] .nav-link {
+            color: white;
+        }
+
+        nav[data-bs-theme="light"] .navbar-brand,
+        nav[data-bs-theme="light"] .nav-link {
+            color: black;
+        }
+
+        nav[data-bs-theme="dark"] .nav-link:hover {
+            color: #ddd;
+        }
+
+        nav[data-bs-theme="light"] .nav-link:hover {
+            color: #007bff;
+        }
+
+        /* Footer Styling */
+        footer[data-bs-theme="dark"] {
+            background-color: #1a1a1a; /* Darker footer for dark theme */
+            color: white;
+        }
+
+        footer[data-bs-theme="light"] {
+            background-color: #e9ecef; /* Lighter footer for light theme */
+            color: black;
+        }
+
+        footer a {
+            color: inherit; /* Make links inherit the text color */
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Custom Search Bar Styling */
+        .search-bar {
+            width: 250px;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            border-radius: 30px;
+            padding-left: 20px;
+            height: 40px;
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 5px rgba(38, 143, 255, 0.8);
+            border-color: #007bff;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm" data-bs-theme="light">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'home' %}">🐾 Small Size Puppies for Adoption</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'puppies' %}">Puppies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+
+                <!-- Search Bar -->
+                <form class="d-flex search-bar" action="{% url 'puppy_search' %}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search puppies..." aria-label="Search" name="query">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+
+                <button class="btn btn-outline-secondary btn-sm" id="theme-toggle">🌓 Toggle Theme</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center py-3 mt-auto" data-bs-theme="dark">
+        <div class="container">
+            <!-- About Us, Contact Info, Follow Us - Grid Layout -->
+            <div class="row mb-3">
+                <!-- Contact Information Section -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="fs-6">Contact Information</h5>
+                    <p class="fs-7">
+                        <i class="fas fa-envelope"></i> Email: <a href="mailto:smallbreedpuppies79@gmail.com" class="text-decoration-none">smallbreedpuppies79@gmail.com</a><br>
+                        <i class="fas fa-phone-alt"></i> Phone: <a href="tel:+1234567890" class="text-decoration-none">+123 456 7890</a>
+                    </p>
+                </div>
+                <!-- Social Media Section -->
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="fs-6">Follow Us</h5>
+                    <div class="d-flex justify-content-center">
+                        <a href="https://www.facebook.com/share/1FXJP5FbBu/?mibextid=wwXIfr" class="text-decoration-none mx-2" target="_blank"><i class="fab fa-facebook fa-lg text-primary"></i></a>
+                        <a href="https://instagram.com" class="text-decoration-none mx-2" target="_blank"><i class="fab fa-instagram fa-lg text-danger"></i></a>
+                        <a href="https://www.tiktok.com/@smallsizepuppies?_t=ZT-8vWRV9mumja&_r=1" class="text-decoration-none mx-2" target="_blank"><i class="fab fa-tiktok fa-lg text-info"></i></a>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Footer Links -->
+            <p class="mb-1 fs-7">
+                &copy; {{ now.year }} Small Size Puppies for Adoption |
+                <a href="{% url 'adoption_agreement' %}" class="text-decoration-underline">Health and Adoption Agreement</a> |
+                <a href="#" class="text-decoration-underline">Terms of Use</a> |
+                <a href="#" class="text-decoration-underline">Privacy Policy</a>
+            </p>
+        
+            <!-- Payment Methods (smaller icons) -->
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                <img src="{% static 'img/payments/cashapp.png' %}" alt="Cash App" height="25">
+                <img src="{% static 'img/payments/paypal.jpg' %}" alt="PayPal" height="25">
+                <img src="{% static 'img/payments/chime.png' %}" alt="Chime" height="25">
+                <img src="{% static 'img/payments/applepay.png' %}" alt="Apple Pay" height="25">
+                <img src="{% static 'img/payments/zelle.png' %}" alt="Zelle" height="25">
+            </div>
+        </div>
+    </footer>
+    
+    
+    
+    
+    
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggler using Bootstrap's data-bs-theme attribute
+        const toggleBtn = document.getElementById('theme-toggle');
+        toggleBtn.addEventListener('click', () => {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Set theme from localStorage on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('theme');
+            if (saved) document.documentElement.setAttribute('data-bs-theme', saved);
+        });
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

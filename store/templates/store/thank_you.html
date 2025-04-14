@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="container my-5 text-center">
+    <h2 class="text-success mb-4">🎉 Thank You for Your Adoption Request!</h2>
+    <p class="lead">Your adoption request has been received successfully. We will contact you soon.</p>
+    <p class="text-muted">In the meantime, feel free to reach out to us:</p>
+
+    <div class="mt-4">
+        <p>
+            <strong>Email:</strong> <a href="mailto:{{ smallbreedpuppies79@gmail.com }}" class="text-decoration-none">{{ email }}</a><br>
+            <strong>WhatsApp:</strong> <a href="{{ whatsapp }}" target="_blank" class="btn btn-success btn-sm mt-2">Chat on WhatsApp</a>
+        </p>
+    </div>
+
+    <a href="{% url 'home' %}" class="btn btn-outline-primary mt-3">Back to Home</a>
+</div>
+{% endblock %}

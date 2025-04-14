@@ -1,0 +1,97 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4 fw-bold">🐾 Available Puppies for Adoption</h2>
+    <p class="text-center text-muted mb-5">Browse through our adorable puppies and choose your perfect companion!</p>
+
+    <div class="row g-4">
+        {% for puppy in puppies %}
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="card shadow-sm border-light rounded image-hover">
+                <img src="{{ puppy.images.first.image.url }}" class="card-img-top puppy-image" alt="{{ puppy.name }}">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ puppy.name }}</h5>
+                    <p class="card-text text-muted">{{ puppy.description|truncatewords:15 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold">${{ puppy.price }}</span>
+                        <a href="{% url 'puppy_detail' puppy.id %}" class="btn btn-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No puppies available for adoption at the moment. Please check back later.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        {% if puppies.has_previous %}
+            <a href="?page=1" class="btn btn-outline-primary btn-sm me-2">First</a>
+            <a href="?page={{ puppies.previous_page_number }}" class="btn btn-outline-primary btn-sm me-2">Previous</a>
+        {% endif %}
+        
+        <span class="mx-2">Page {{ puppies.number }} of {{ puppies.paginator.num_pages }}</span>
+
+        {% if puppies.has_next %}
+            <a href="?page={{ puppies.next_page_number }}" class="btn btn-outline-primary btn-sm me-2">Next</a>
+            <a href="?page={{ puppies.paginator.num_pages }}" class="btn btn-outline-primary btn-sm">Last</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Hover effect for image zoom */
+    .image-hover {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-hover:hover {
+        transform: translateY(-5px); /* Slight upward movement */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Add shadow when hovered */
+    }
+
+    .puppy-image {
+        transition: transform 0.3s ease;
+    }
+
+    .image-hover:hover .puppy-image {
+        transform: scale(1.1); /* Image zoom effect */
+    }
+
+    .card-body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .image-hover:hover .card-body {
+        background-color: rgba(0, 0, 0, 0.1); /* Light overlay on card body */
+        color: #fff; /* Change text color to white */
+    }
+
+    .card-body h5 {
+        font-size: 1.1rem;
+    }
+
+    .card-body p {
+        font-size: 0.9rem;
+    }
+
+    /* Pagination styling */
+    .pagination a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .pagination a:hover {
+        text-decoration: underline;
+    }
+
+</style>
+{% endblock %}

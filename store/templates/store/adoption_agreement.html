@@ -1,0 +1,28 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4">Health and Adoption Agreement</h2>
+    <p class="text-muted text-center mb-5">Please read and accept the following terms before adopting a puppy.</p>
+
+    <div class="mb-4">
+        <h4 class="text-success">Health Guarantee</h4>
+        <p>We guarantee that all puppies are in good health at the time of adoption. All puppies have been checked by a licensed veterinarian and have received their first round of vaccinations. We are not responsible for any health conditions that may arise after the adoption. It is the responsibility of the adopter to ensure proper veterinary care after the adoption.</p>
+    </div>
+
+    <div class="mb-4">
+        <h4 class="text-success">Adoption Terms</h4>
+        <p>By adopting a puppy from us, you agree to provide a loving and safe home. You agree not to breed, sell, or abandon the puppy at any time. You must ensure the puppy receives proper care, including adequate food, exercise, and medical attention. If you are unable to care for the puppy, we request that you return the puppy to us instead of surrendering them to a shelter.</p>
+    </div>
+
+    <!-- Download Link for PDF Agreement -->
+    <div class="text-center mt-4">
+        <a href="{% static 'pdf/adoption_agreement_form.pdf' %}" class="btn btn-outline-success" download>Download Adoption Agreement (PDF)</a>
+
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

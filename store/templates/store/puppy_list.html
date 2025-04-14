@@ -1,0 +1,76 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center text-primary mb-4 fw-bold">🐾 Available Puppies for Adoption</h2>
+    <p class="text-center text-muted mb-5">Browse through our adorable puppies and choose your perfect companion!</p>
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-md-8 offset-md-2">
+            <form action="{% url 'puppies' %}" method="get" class="d-flex">
+                <input type="text" class="form-control" name="query" placeholder="Search puppies by name, breed..." value="{{ query }}">
+                <button type="submit" class="btn btn-primary ms-2">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    {% if query %}
+    <p class="text-center text-muted">Showing results for "{{ query }}"</p>
+    {% endif %}
+
+    <div class="row">
+        {% for puppy in puppies %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-light rounded">
+                <img src="{{ puppy.images.first.image.url }}" class="card-img-top puppy-image" alt="{{ puppy.name }}">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ puppy.name }}</h5>
+                    <p class="card-text text-muted">{{ puppy.description|truncatewords:15 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-success fw-bold">${{ puppy.price }}</span>
+                        <a href="{% url 'puppy_detail' puppy.id %}" class="btn btn-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">No puppies match your search. Please try again with different keywords.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center">
+        {% if puppies.has_previous %}
+            <a href="?page=1" class="btn btn-outline-primary btn-sm">First</a>
+            <a href="?page={{ puppies.previous_page_number }}" class="btn btn-outline-primary btn-sm">Previous</a>
+        {% endif %}
+        
+        <span class="mx-2">Page {{ puppies.number }} of {{ puppies.paginator.num_pages }}</span>
+
+        {% if puppies.has_next %}
+            <a href="?page={{ puppies.next_page_number }}" class="btn btn-outline-primary btn-sm">Next</a>
+            <a href="?page={{ puppies.paginator.num_pages }}" class="btn btn-outline-primary btn-sm">Last</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .puppy-image {
+        width: 100%;
+        height: 250px; /* Fixed height for images */
+        object-fit: cover; /* Ensures the image fits well and maintains aspect ratio */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect */
+    }
+
+    .puppy-image:hover {
+        transform: scale(1.05); /* Slight zoom effect */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adding shadow effect */
+    }
+</style>
+{% endblock %}
