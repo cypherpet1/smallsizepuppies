@@ -119,6 +119,9 @@ import os
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/# Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Directory for collecting static files for deployment (usually for production)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
