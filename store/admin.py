@@ -1,10 +1,6 @@
 from django.contrib import admin
-from .models import Puppy, PuppyImage, AdoptionRequest, Contact
-#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
-# Customizing the Admin site
-admin.site.site_header = "Small Size Puppies Admin"  # Custom header text
-admin.site.site_title = "Small Size Puppies Admin Dashboard"  # Title displayed in the browser's title bar
-admin.site.index_title = "Welcome to the Puppy Adoption Admin Panel"  # Index page title
+from .models import Puppy, PuppyImage, AdoptionRequest, Contact, CustomerReview
+from django.utils.html import format_html
 
 class PuppyImageInline(admin.TabularInline):
     model = PuppyImage
@@ -12,15 +8,36 @@ class PuppyImageInline(admin.TabularInline):
 
 @admin.register(Puppy)
 class PuppyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'breed', 'price', 'is_adopted')
-    list_filter = ('is_adopted', 'breed')
+    list_display = ('name', 'breed', 'price', 'age', 'gender', 'is_adopted', 'created_at')
+    search_fields = ('name', 'breed')
+    list_filter = ('breed', 'gender', 'is_adopted')
     inlines = [PuppyImageInline]
-    
+
 @admin.register(AdoptionRequest)
 class AdoptionRequestAdmin(admin.ModelAdmin):
-    list_display = ('name', 'puppy', 'email', 'submitted_at')
-    search_fields = ('name', 'email', 'puppy__name')
+    list_display = ('name', 'puppy', 'email', 'phone', 'submitted_at')
+    search_fields = ('name', 'email')
     list_filter = ('submitted_at',)
 
-# Registering the Contact model
-admin.site.register(Contact)
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'subject', 'created_at')
+    search_fields = ('name', 'email', 'subject')
+    list_filter = ('created_at',)
+
+@admin.register(CustomerReview)
+class CustomerReviewAdmin(admin.ModelAdmin):
+    list_display = ('name', 'photo_preview', 'star_rating', 'created_at')
+    readonly_fields = ('photo_preview',)
+    search_fields = ('name', 'review')
+    list_filter = ('rating', 'created_at')
+
+    def photo_preview(self, obj):
+        if obj.photo:
+            return format_html('<img src="{}" width="50" height="50" style="border-radius: 50%;">', obj.photo.url)
+        return "-"
+    photo_preview.short_description = 'Photo'
+
+    def star_rating(self, obj):
+        return format_html('★' * obj.rating + '☆' * (5 - obj.rating))
+    star_rating.short_description = 'Rating'

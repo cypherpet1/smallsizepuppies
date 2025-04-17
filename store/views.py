@@ -1,30 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
-from .models import Puppy
+from django.contrib import messages
+from .models import Puppy, CustomerReview, Contact, AdoptionRequest
 from .forms import AdoptionForm
+from django.core.paginator import Paginator
+from random import choice
 
 CONTACT_INFO = {
-    'email': 'your@email.com',
-    'whatsapp': 'https://wa.me/237612345678'
+    'email': 'smallbreedpuppies79@gmail.com',
+    'whatsapp': 'https://wa.me/+1589124578'
 }
-
-from .models import Puppy
-
-from random import choice
-from .models import Puppy
 
 def home(request):
     puppies = Puppy.objects.prefetch_related('images').all()
     random_puppy = choice(puppies) if puppies else None
+    reviews = CustomerReview.objects.all()  # Fetch all reviews
+
     return render(request, 'store/home.html', {
         'puppies': puppies,
         'random_puppy': random_puppy,
+        'reviews': reviews,  # Pass reviews to the template
     })
-
-
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
 
 def puppies(request):
     puppies_list = Puppy.objects.all()  # Fetch all puppies
@@ -33,16 +29,9 @@ def puppies(request):
     puppies = paginator.get_page(page_number)
     return render(request, "store/puppies.html", {'puppies': puppies})
 
-
 def puppy_detail(request, pk):
     puppy = get_object_or_404(Puppy, pk=pk)
     return render(request, 'store/puppy_detail.html', {'puppy': puppy})
-
-from django.contrib import messages
-
-
-
-from .models import Contact  # Make sure you've created this model
 
 def contact(request):
     if request.method == "POST":
@@ -64,11 +53,6 @@ def contact(request):
 
     return render(request, "store/contact.html")
 
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Puppy, AdoptionRequest
-
 def adopt(request, pk):
     puppy = get_object_or_404(Puppy, id=pk)
     if request.method == 'POST':
@@ -87,14 +71,8 @@ def adopt(request, pk):
         return render(request, 'store/adopt_success.html', {'puppy': puppy})
     return redirect('puppy_detail', puppy_id=pk)
 
-
 def thank_you(request):
     return render(request, 'store/thank_you.html', CONTACT_INFO)
-
-# views.py
-
-from django.shortcuts import render
-from .models import Puppy
 
 def puppy_search(request):
     query = request.GET.get('query', '')
@@ -104,13 +82,8 @@ def puppy_search(request):
         puppies = Puppy.objects.all()  # Show all puppies if no query
     return render(request, 'store/puppy_list.html', {'puppies': puppies, 'query': query})
 
-
-
-
 def adoption_agreement(request):
     return render(request, 'store/adoption_agreement.html')
-from django.shortcuts import render
-from .models import Puppy
 
 def puppy_list(request):
     puppies = Puppy.objects.all()

@@ -7,11 +7,13 @@ class Puppy(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     is_adopted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    age=models.PositiveBigIntegerField(default=16)
-    gender=models.CharField(max_length=255)
-    registration=models.CharField(max_length=255)
+    age = models.PositiveBigIntegerField(default=16)
+    gender = models.CharField(max_length=255)
+    registration = models.CharField(max_length=255)
+
     def __str__(self):
         return self.name
+
 
 class PuppyImage(models.Model):
     puppy = models.ForeignKey(Puppy, related_name='images', on_delete=models.CASCADE)
@@ -19,7 +21,7 @@ class PuppyImage(models.Model):
 
 
 class AdoptionRequest(models.Model):
-    puppy = models.ForeignKey('Puppy', on_delete=models.CASCADE)
+    puppy = models.ForeignKey(Puppy, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
@@ -28,7 +30,6 @@ class AdoptionRequest(models.Model):
 
     def __str__(self):
         return f"Adoption Request by {self.name} for {self.puppy.name}"
-# store/models.py
 
 
 class Contact(models.Model):
@@ -40,3 +41,15 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
+
+
+# New Model: Customer Review (admin controlled)
+class CustomerReview(models.Model):
+    name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='customer_reviews/')
+    rating = models.PositiveSmallIntegerField(choices=[(i, f"{i} Stars") for i in range(1, 6)])
+    review = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Review by {self.name} ({self.rating} stars)"

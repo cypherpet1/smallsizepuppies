@@ -60,9 +60,43 @@
         </div>
     </div>
 </section>
+
+<!-- Customer Reviews -->
+<section class="py-5 bg-light" id="reviews">
+    <div class="container">
+        <h3 class="fw-bold text-center text-primary mb-4">What Our Happy Adopters Say</h3>
+        <div class="row g-4 justify-content-center">
+            {% for review in reviews %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body text-center">
+                        <img src="{{ review.photo.url }}" alt="{{ review.name }}" class="rounded-circle mb-3 shadow-sm" style="width: 80px; height: 80px; object-fit: cover;">
+                        <h5 class="card-title text-success">{{ review.name }}</h5>
+                        <div class="mb-2">
+                            {% for i in "12345"|slice:":review.rating"|make_list %}
+                                <i class="fas fa-star text-warning"></i>
+                            {% endfor %}
+                            {% for i in "12345"|slice:"review.rating:"|make_list %}
+                                <i class="far fa-star text-muted"></i>
+                            {% endfor %}
+                        </div>
+                        <p class="card-text fst-italic text-muted">“{{ review.review }}”</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center">
+                <p class="text-muted">No reviews yet. Be the first to leave one!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block extra_head %}
+<!-- Custom Styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
     /* Puppies Section */
     .image-hover {
@@ -118,6 +152,7 @@
         box-shadow: 0 6px 20px rgba(206, 52, 52, 0.2);
     }
 
+    /* Dark Mode Tweaks */
     @media (max-width: 767px) {
         .about-section {
             text-align: center;
