@@ -76,9 +76,7 @@
                             {% for i in "12345"|slice:":review.rating"|make_list %}
                                 <i class="fas fa-star text-warning"></i>
                             {% endfor %}
-                            {% for i in "12345"|slice:"review.rating:"|make_list %}
-                                <i class="far fa-star text-muted"></i>
-                            {% endfor %}
+                          
                         </div>
                         <p class="card-text fst-italic text-muted">“{{ review.review }}”</p>
                     </div>
