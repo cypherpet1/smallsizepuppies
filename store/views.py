@@ -8,7 +8,7 @@ from random import choice
 
 CONTACT_INFO = {
     'email': 'smallbreedpuppies79@gmail.com',
-    'whatsapp': 'https://wa.me/+1589124578'
+    'whatsapp': 'https://wa.me/+13862002080'
 }
 
 def home(request):
@@ -53,6 +53,11 @@ def contact(request):
 
     return render(request, "store/contact.html")
 
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Puppy, AdoptionRequest
+
 def adopt(request, pk):
     puppy = get_object_or_404(Puppy, id=pk)
     if request.method == 'POST':
@@ -61,6 +66,7 @@ def adopt(request, pk):
         phone = request.POST.get('phone', '')
         message = request.POST.get('message', '')
 
+        # Save the request in the database
         AdoptionRequest.objects.create(
             puppy=puppy,
             name=name,
@@ -68,8 +74,52 @@ def adopt(request, pk):
             phone=phone,
             message=message
         )
+
+        # Email to Admin
+        subject_admin = f"New Adoption Request for {puppy.name}"
+        body_admin = (
+            f"New adoption request submitted:\n\n"
+            f"Puppy: {puppy.name}\n"
+            f"Name: {name}\n"
+            f"Email: {email}\n"
+            f"Phone: {phone}\n"
+            f"Message: {message}"
+        )
+
+        send_mail(
+            subject_admin,
+            body_admin,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.DEFAULT_FROM_EMAIL],  # your admin email
+            fail_silently=False,
+        )
+
+        # Email to Client
+        subject_client = f"Adoption Request Received – {puppy.name}"
+        body_client = (
+            f"Hi {name},\n\n"
+            f"Thank you for your interest in adopting {puppy.name} from Small Size Puppies!\n"
+            f"We have received your request and will contact you shortly.\n\n"
+            f"Here’s a summary of your submission:\n"
+            f"Puppy: {puppy.name}\n"
+            f"Breed: {puppy.breed}\n"
+            f"Message: {message}\n\n"
+            f"Regards,\n"
+            f"Small Size Puppies Team"
+        )
+
+        send_mail(
+            subject_client,
+            body_client,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],  # client's email
+            fail_silently=False,
+        )
+
         return render(request, 'store/adopt_success.html', {'puppy': puppy})
+
     return redirect('puppy_detail', puppy_id=pk)
+
 
 def thank_you(request):
     return render(request, 'store/thank_you.html', CONTACT_INFO)

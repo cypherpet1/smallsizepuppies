@@ -136,3 +136,15 @@ from whitenoise import WhiteNoise
 
 
 
+# Email Settings for Gmail SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Replace with your Gmail email and App Password
+EMAIL_HOST_USER = 'smallbreedpuppies79@gmail.com'
+EMAIL_HOST_PASSWORD = 'cyom dlox wcuc ruxp '  # Not your Gmail password
+
+# Default sender email
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
