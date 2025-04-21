@@ -118,7 +118,7 @@ def adopt(request, pk):
 
         return render(request, 'store/adopt_success.html', {'puppy': puppy})
 
-    return redirect('puppy_detail', puppy_id=pk)
+    return redirect('puppy_detail', pk=pk)
 
 
 def thank_you(request):
