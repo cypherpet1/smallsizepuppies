@@ -22,15 +22,16 @@
     </div>
 
     <h4 class="text-center text-primary mt-5">Our Accepted Payment Methods</h4>
-    <div class="text-center mt-4">
-        <!-- Payment Method Logos -->
-        <div class="d-flex justify-content-center">
-            <img src="{% static 'img/payments/paypal.jpg' %}" alt="PayPal" class="img-fluid mx-3" style="width: 100px; height: auto;">
-            <img src="{% static 'img/payments/applepay.png' %}" alt="Apple Pay" class="img-fluid mx-3" style="width: 130px; height: auto;">
-            <img src="{% static 'img/payments/cashapp.png' %}" alt="CashApp" class="img-fluid mx-3" style="width: 130px; height: auto;">
-            <img src="{% static 'img/payments/zelle.png' %}" alt="Zelle" class="img-fluid mx-3" style="width: 100px; height: auto;">
-            <img src="{% static 'img/payments/chime.png' %}" alt="Chime" class="img-fluid mx-3" style="width: 100px; height: auto;">
-        </div>
+<div class="container text-center mt-4">
+    <!-- Responsive Payment Method Logos -->
+    <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
+        <img src="{% static 'img/payments/paypal.jpg' %}" alt="PayPal" class="img-fluid" style="width: 100px; height: auto;">
+        <img src="{% static 'img/payments/applepay.png' %}" alt="Apple Pay" class="img-fluid" style="width: 130px; height: auto;">
+        <img src="{% static 'img/payments/cashapp.png' %}" alt="CashApp" class="img-fluid" style="width: 130px; height: auto;">
+        <img src="{% static 'img/payments/zelle.png' %}" alt="Zelle" class="img-fluid" style="width: 100px; height: auto;">
+        <img src="{% static 'img/payments/chime.png' %}" alt="Chime" class="img-fluid" style="width: 100px; height: auto;">
     </div>
+</div>
+
 </div>
 {% endblock %}
