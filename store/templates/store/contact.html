@@ -18,55 +18,39 @@
                 Have questions about our puppies or adoption process? We'd love to hear from you.
             </p>
 
-            <form method="post" novalidate>
+            <form method="post" novalidate id="contact-form">
                 {% csrf_token %}
 
                 <div class="mb-3">
                     <label for="name" class="form-label">Your Name</label>
-                    <input type="text" name="name" class="form-control" id="name" required>
-                    {% if form.name.errors %}
-                        <div class="text-danger">
-                            {% for error in form.name.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <input type="text" name="name" class="form-control" id="name" required minlength="2">
+                    <div class="invalid-feedback" id="name-error">
+                        Please provide a valid name with at least 2 characters.
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Your Email</label>
                     <input type="email" name="email" class="form-control" id="email" required>
-                    {% if form.email.errors %}
-                        <div class="text-danger">
-                            {% for error in form.email.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <div class="invalid-feedback" id="email-error">
+                        Please provide a valid email address.
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="subject" class="form-label">Subject</label>
-                    <input type="text" name="subject" class="form-control" id="subject" required>
-                    {% if form.subject.errors %}
-                        <div class="text-danger">
-                            {% for error in form.subject.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <input type="text" name="subject" class="form-control" id="subject" required minlength="2">
+                    <div class="invalid-feedback" id="subject-error">
+                        Please provide a subject with at least 2 characters.
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
                     <textarea name="message" class="form-control" id="message" rows="5" required></textarea>
-                    {% if form.message.errors %}
-                        <div class="text-danger">
-                            {% for error in form.message.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <div class="invalid-feedback" id="message-error">
+                        Please provide a message.
+                    </div>
                 </div>
 
                 <div class="text-end">
@@ -82,10 +66,54 @@
 
 {% block extra_scripts %}
 <script>
-    // Show spinner and disable button on form submit
-    document.querySelector('form').addEventListener('submit', function() {
-        document.getElementById('spinner').classList.remove('d-none');
-        document.getElementById('submit-button').disabled = true;
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        let isValid = true;
+
+        // Validate Name
+        const name = document.getElementById('name');
+        if (name.value.trim().length < 2) {
+            name.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            name.classList.remove('is-invalid');
+        }
+
+        // Validate Email
+        const email = document.getElementById('email');
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email.value)) {
+            email.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            email.classList.remove('is-invalid');
+        }
+
+        // Validate Subject
+        const subject = document.getElementById('subject');
+        if (subject.value.trim().length < 2) {
+            subject.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            subject.classList.remove('is-invalid');
+        }
+
+        // Validate Message
+        const message = document.getElementById('message');
+        if (message.value.trim() === '') {
+            message.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            message.classList.remove('is-invalid');
+        }
+
+        if (isValid) {
+            // Show spinner and disable submit button on valid form
+            document.getElementById('spinner').classList.remove('d-none');
+            document.getElementById('submit-button').disabled = true;
+            this.submit(); // Submit the form
+        }
     });
 </script>
 {% endblock %}
