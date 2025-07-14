@@ -150,5 +150,5 @@ EMAIL_HOST_PASSWORD = 'cyom dlox wcuc ruxp '  # Not your Gmail password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CSRF_TRUSTED_ORIGINS = [
-    '*',
+    'https://www.smallbreedpuppies.me',
 ]
