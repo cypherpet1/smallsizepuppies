@@ -148,3 +148,7 @@ EMAIL_HOST_PASSWORD = 'cyom dlox wcuc ruxp '  # Not your Gmail password
 
 # Default sender email
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CSRF_TRUSTED_ORIGINS = [
+    '*',
+]
