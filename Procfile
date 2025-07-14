@@ -1,1 +1,1 @@
-web:gunicorn puppy.wsgi
+web: gunicorn puppy.wsgi
